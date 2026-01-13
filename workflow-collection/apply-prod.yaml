@@ -1,0 +1,20 @@
+name: Deploy via Centralized Terraform Workflow
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    uses: aisana0131/AC-Task/.github/workflows/centralized-apply.yaml@main
+    with:
+      working_directory: terraform
+      aws_role_arn: ${{ vars.AWS_PROD_ROLE_ARN }}
+      s3_bucket: ${{vars.PROD_S3_BUCKET}}
+      s3_key_prefix: prod
+      aws_region: ${{ vars.AWS_REGION }}
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.PROD_AWS_ACCOUNT_ID }}
